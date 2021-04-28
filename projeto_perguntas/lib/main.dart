@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './questao.dart';
+import './resposta.dart';
 
 main() {
   runApp(new PerguntasApp());
@@ -12,7 +13,6 @@ class _PerguntasAppState extends State<PerguntasApp> {
     setState(() {
       _perguntaSelecionada++;
     });
-    print(_perguntaSelecionada);
   }
 
   /* void Function() funcaoQueRetornaOutraFuncao() {
@@ -23,7 +23,22 @@ class _PerguntasAppState extends State<PerguntasApp> {
 
   @override
   Widget build(BuildContext context) {
-    final perguntas = ['Qual sua cor favorita?', 'Qual o seu animal favorito?'];
+    final perguntas = [
+      {
+        'texto': 'Qual sua cor favorita?',
+        'respostas': ['Preto', 'Amarelo', 'Verde'],
+      },
+      {
+        'texto': 'Qual o seu animal favorito?',
+        'respostas': ['Gato', 'Cachorro', 'Leão'],
+      },
+    ];
+
+    List<Widget> respostas=[];
+
+    for (String in textoResp in perguntas[_perguntaSelecionada]['respostas']){
+      respostas.add(Resposta(textoResp, _responder));
+    }
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -31,8 +46,13 @@ class _PerguntasAppState extends State<PerguntasApp> {
         ),
         body: Column(
           children: [
-            Questao(perguntas[_perguntaSelecionada]),
-            ElevatedButton(
+            Questao(perguntas[_perguntaSelecionada]['texto']),
+            ...respostas,
+            /* Resposta('Resposta 1', _responder),
+            Resposta('Resposta 2', _responder),
+            Resposta('Resposta 3', _responder),*/
+
+            /* ElevatedButton(
               child: Text('Resposta 1'),
               onPressed: _responder, //o void _responder fica sem (),
               //você só chama o metodo, você não passa por parâmetro
@@ -45,7 +65,7 @@ class _PerguntasAppState extends State<PerguntasApp> {
               child: Text('Resposta 3'),
               onPressed: _responder,
               /* funcaoQueRetornaOutraFuncao() nesse caso, uma função chama outra função,*/
-            ),
+            ),*/
           ],
         ),
       ),
