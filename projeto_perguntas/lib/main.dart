@@ -8,11 +8,27 @@ main() {
 
 class _PerguntasAppState extends State<PerguntasApp> {
   var _perguntaSelecionada = 0;
+  final _perguntas = const [
+    {
+      'texto': 'Qual sua cor favorita?',
+      'respostas': ['Preto', 'Amarelo', 'Verde'],
+    },
+    {
+      'texto': 'Qual o seu animal favorito?',
+      'respostas': ['Gato', 'Cachorro', 'Leão'],
+    },
+  ];
 
   void _responder() {
-    setState(() {
-      _perguntaSelecionada++;
-    });
+    if (temPerguntaSelecionada) {
+      setState(() {
+        _perguntaSelecionada++;
+      });
+    }
+  }
+
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
   }
 
   /* void Function() funcaoQueRetornaOutraFuncao() {
@@ -23,36 +39,32 @@ class _PerguntasAppState extends State<PerguntasApp> {
 
   @override
   Widget build(BuildContext context) {
-    final perguntas = [
-      {
-        'texto': 'Qual sua cor favorita?',
-        'respostas': ['Preto', 'Amarelo', 'Verde'],
-      },
-      {
-        'texto': 'Qual o seu animal favorito?',
-        'respostas': ['Gato', 'Cachorro', 'Leão'],
-      },
-    ];
+    List<String> respostas = temPerguntaSelecionada
+        ? _perguntas[_perguntaSelecionada]['respostas']
+        : null;
 
-    List<Widget> respostas=[];
+    //tem pergunta selecionada, se sim, ele entra, se não vai pra null
 
-    for (String in textoResp in perguntas[_perguntaSelecionada]['respostas']){
-      respostas.add(Resposta(textoResp, _responder));
-    }
+    // for (String in textoResp in respostas ){
+    //  widgets.add(Resposta(textoResp, _responder));
+    // }
+    //
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('perguntas'),
         ),
-        body: Column(
-          children: [
-            Questao(perguntas[_perguntaSelecionada]['texto']),
-            ...respostas,
-            /* Resposta('Resposta 1', _responder),
+        body: temPerguntaSelecionada
+            ? Column(
+                children: [
+                  Questao(_perguntas[_perguntaSelecionada]['texto']),
+                  ...respostas.map((t) => Resposta(t, _responder)).toList(),
+                  /* Resposta('Resposta 1', _responder),
             Resposta('Resposta 2', _responder),
             Resposta('Resposta 3', _responder),*/
 
-            /* ElevatedButton(
+                  /* ElevatedButton(
               child: Text('Resposta 1'),
               onPressed: _responder, //o void _responder fica sem (),
               //você só chama o metodo, você não passa por parâmetro
@@ -66,8 +78,9 @@ class _PerguntasAppState extends State<PerguntasApp> {
               onPressed: _responder,
               /* funcaoQueRetornaOutraFuncao() nesse caso, uma função chama outra função,*/
             ),*/
-          ],
-        ),
+                ],
+              )
+            : null,
       ),
     );
   }
