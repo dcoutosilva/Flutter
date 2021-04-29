@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './questao.dart';
 import './resposta.dart';
+import './resultado.dart';
 
 main() {
   runApp(new PerguntasApp());
@@ -80,7 +81,7 @@ class _PerguntasAppState extends State<PerguntasApp> {
             ),*/
                 ],
               )
-            : null,
+            : Resultado(),
       ),
     );
   }
